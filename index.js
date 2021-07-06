@@ -5,11 +5,11 @@ const port=3000;
 
 
 app.get('/',(request, response)=>{
-    response.status(200).send("<h1>Hello There</h1>");
+    response.status(200).send("<h1>Welcome to Java Script</h1>");
 })
 
 app.get('/healthCheck',(request, response)=>{
-    response.status(200).send("<h2> Server is UP</h2>");
+    response.status(200).send("<h2> Server is UP! Welcome to Health Check </h2>");
 })
 
 app.listen(port,()=>{
