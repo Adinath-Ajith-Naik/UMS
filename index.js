@@ -1,12 +1,14 @@
 //const { response } = require("express");
-const { response } = require("express");
+const {
+    response
+} = require("express");
 const express = require("express");
 const app = express();
 const port = 3000;
 app.use(express.json());
 
 
-var arr = ['Books', 'Pencil', 'Pen', 'Reference Guide'];
+//var arr = ['Books', 'Pencil', 'Pen', 'Reference Guide'];
 
 //Object Creation
 let users = [{
@@ -45,44 +47,47 @@ app.get('/users', (request, response) => {
 })
 
 app.post('/login', (request, response) => {
-    console.log("hello login");
-    console.log(request.body.Username);
-    var uname=request.body.Username;
-    var upw=request.body.Password
-    var name = users.forEach((user) => {
-        console.log(user.userName)
+    console.log("Hello login");
+    //console.log(request.body.Username);
+    var uname = request.body.Username;
+    var upw = request.body.Password;
+    var logUser = null;
+    users.forEach((user) => {
+        if (uname === user.userName && upw === user.password) {
+            console.log(true);
+            logUser = user;
+        }
     });
+    console.log(logUser);
+    var respo={
+        acknowledgement:{
+            status:"",
+            message:""
+        },
+        data:null
+    };
 
-    var pw = users.forEach((user) => {
-        console.log(user.password)
-    });
-
-   // var name=users.forEach(user.name);
-    //var pw=users.forEach(user.password);'
-
-    console.log("*************************");
-    console.log(uname);
-
-    if(uname== name && upw==pw )
-    {
-        respond.send("Login Successful !!!")
+    if (logUser) {
+        respo.acknowledgement.status="Success";
+        respo.acknowledgement.message="Login Successful";
+        respo.data=logUser;
+        response.status(200).send(respo);
+    } else {
+        respo.acknowledgement.status="Fail";
+        respo.acknowledgement.message="Login Fail";
+        respo.data=null;
+        response.status(200).send(respo);
     }
-    else
-    {
-        respond.send("Login Failed !!! Please check the credentials.. ");
-        respond.send("Please check again");
-    }
-    response.send("OK");
-    
+
 })
 
-app.post('/addition',(request,response)=>{
+app.post('/addition', (request, response) => {
     console.log("Addition taking place.")
 
-    var v1= request.body.a;
-    var v2= request.body.b;
+    var v1 = request.body.a;
+    var v2 = request.body.b;
 
-    var sum =Number(request.body.a)+ Number(request.body.b);
+    var sum = Number(request.body.a) + Number(request.body.b);
 
     repsond.send(sum);
 
@@ -90,7 +95,7 @@ app.post('/addition',(request,response)=>{
 
 app.listen(port, () => {
     console.log("Server Up! Welcome to  ", port);
-    
+
 
 });
 
