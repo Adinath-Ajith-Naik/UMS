@@ -148,6 +148,46 @@ app.get('/users', (request, response) => {
     }
 })
 
+//Updating the details of user
+
+app.post('/user/update/:id',(request,response)=>{
+    var uID=request.params.id;
+    console.log("ID",uID);
+    
+    var name=request.body.Name;
+
+    var respo={
+        acknowledgement:{
+            status:"",
+            message:""
+        },
+        data:null
+    };
+
+    var flag=100;
+
+    users.forEach((user)=>{
+        if(ID==user.userId){
+            user.firstName=name;
+            flag++;
+        }else{
+            flag--;
+        }
+
+    });
+
+    if(flag>100){
+        response.acknowledgement.staus="Success";
+        response.acknowledgement.message="User Details Updated Succesfully";
+        response.data=users.ID
+    }else{
+        response.acknowledgement.staus="Fail";
+        response.acknowledgement.message="User Details Updation Failed";
+        response.data=null;
+    }
+
+})
+
 //
 
 app.post('/addition', (request, response) => {
