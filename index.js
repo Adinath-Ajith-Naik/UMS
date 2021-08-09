@@ -46,11 +46,11 @@ app.get('/users', (request, response) => {
 // Login Check
 
 app.post('/login', (request, response) => {
-   // console.log("Hello login");
+    // console.log("Hello login");
     //console.log(request.body.Username);
     var uname = request.body.Username;
     var upw = request.body.Password;
-    console.log("request body",request.body);
+    console.log("request body", request.body);
     var logUser = null;
     users.forEach((user) => {
         if (uname === user.userName && upw === user.password) {
@@ -59,23 +59,23 @@ app.post('/login', (request, response) => {
         }
     });
     console.log(logUser);
-    var respo={
-        acknowledgement:{
-            status:"",
-            message:""
+    var respo = {
+        acknowledgement: {
+            status: "",
+            message: ""
         },
-        data:null
+        data: null
     };
 
     if (logUser) {
-        respo.acknowledgement.status="Success";
-        respo.acknowledgement.message="Login Successful";
-        respo.data=logUser;
+        respo.acknowledgement.status = "Success";
+        respo.acknowledgement.message = "Login Successful";
+        respo.data = logUser;
         response.status(200).send(respo);
     } else {
-        respo.acknowledgement.status="Fail";
-        respo.acknowledgement.message="Login Fail";
-        respo.data=null;
+        respo.acknowledgement.status = "Fail";
+        respo.acknowledgement.message = "Login Fail";
+        respo.data = null;
         response.status(200).send(respo);
     }
 
@@ -83,41 +83,68 @@ app.post('/login', (request, response) => {
 
 // Creating new User
 
-app.post('/user/create',(request,response)=>{
+app.post('/user/create', (request, response) => {
     console.log("Creating a new user")
-    var ID=request.body.id;
+    var ID = request.body.id;
 
-    var user={
-        userId: request.body.id ,
-        firstName:request.body.fName ,
-        middleName:request.body.mName ,
+    var user = {
+        userId: request.body.id,
+        firstName: request.body.fName,
+        middleName: request.body.mName,
         lastName: request.body.lName,
         userName: request.body.uName,
         password: request.body.password,
     }
     users.push(user);
-    var news=ID;
+    var news = ID;
     console.log(users);
-   // console.log(news);
+    // console.log(news);
 
-    var respo={
-        acknowledgement:{
-            status:"",
-            message:""
+    var respo = {
+        acknowledgement: {
+            status: "",
+            message: ""
         },
-        data:null
+        data: null
     };
 
-    if(news){
-        respo.acknowledgement.status="Success";
-        respo.acknowledgement.message="User Created Successful";
-        respo.data=user;
-        response.status(200).send(respo); 
-    }  else{
-        respo.acknowledgement.status="Fail";
-        respo.acknowledgement.message="Creation Failed";
-        respo.data=users.user;
-        response.status(200).send(respo); 
+    if (news) {
+        respo.acknowledgement.status = "Success";
+        respo.acknowledgement.message = "User Created Successful";
+        respo.data = user;
+        response.status(200).send(respo);
+    } else {
+        respo.acknowledgement.status = "Fail";
+        respo.acknowledgement.message = "Creation Failed";
+        respo.data = users.user;
+        response.status(200).send(respo);
+    }
+})
+
+
+//User Display
+
+app.get('/users', (request, response) => {
+    var respo = {
+        acknowledgement: {
+            status: "",
+            message: ""
+        },
+        data: null
+    };
+
+    console.log(users);
+    //users.foreach(user){
+    if (users) {
+        response.acknowledgement.status = "Success";
+        response.acknowledgement.message = "User details";
+        response.data = users;
+        response.status(200).send(respo);
+    } else {
+        response.acknowledgement.status = "Fail";
+        response.acknowledgement.message = "No User details";
+        response.data = null;
+        response.status(200).send(respo);
     }
 })
 
