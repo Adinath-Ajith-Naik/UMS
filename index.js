@@ -1,4 +1,7 @@
 //const { response } = require("express");
+const {
+    response
+} = require("express");
 const express = require("express");
 const app = express();
 const port = 3000;
@@ -150,43 +153,64 @@ app.get('/users', (request, response) => {
 
 //Updating the details of user
 
-app.post('/user/update/:id',(request,response)=>{
-    var uID=request.params.id;
-    console.log("ID",uID);
-    
-    var name=request.body.Name;
-
-    var respo={
-        acknowledgement:{
-            status:"",
-            message:""
+app.post('/user/update/:id', (request, response) => {
+    var uID = request.params.id;
+    console.log("ID", uID);
+    var respo = {
+        acknowledgement: {
+            status: "",
+            message: ""
         },
-        data:null
+        data: null
     };
+    users.forEach((user, index) => {
+        if (uID == user.userId) {
+            if (userUpdate(index, request.body)) {
+                console.log("first");
+                respo.acknowledgement.status = "Success";
+                respo.acknowledgement.message = "User Details Updated Succesfully";
+                respo.data = user
+                response.status(200).send(respo);
+            } else {
+                respo.acknowledgement.status = "Fail";
+                respo.acknowledgement.message = "Enter";
+                response.status(400).send(respo);
 
-    var flag=100;
-
-    users.forEach((user)=>{
-        if(ID==user.userId){
-            user.firstName=name;
-            flag++;
-        }else{
-            flag--;
+            }
+        } else {
+            respo.acknowledgement.status = "Fail";
+            respo.acknowledgement.message = "User Details Updation Failed";
+            respo.data = null;
         }
-
     });
-
-    if(flag>100){
-        response.acknowledgement.staus="Success";
-        response.acknowledgement.message="User Details Updated Succesfully";
-        response.data=users.ID
-    }else{
-        response.acknowledgement.staus="Fail";
-        response.acknowledgement.message="User Details Updation Failed";
-        response.data=null;
+    if (respo.data == null) {
+        response.status(400).send(respo);
     }
-
 })
+
+function userUpdate(index, data) {
+    if (data.fname || data.mname || data.lname || data.un || data.pw) {
+        if(data.fname){
+            users[index].firstName = data.fname;
+        }
+        if(data.mname){
+            users[index].middleName = data.mname;
+        }
+        if(data.lname){
+            users[index].lastName = data.lname;
+        }
+        if(data.un){
+            users[index].userName = data.un;
+        }
+        if(data.pw){
+            users[index].password = data.pw;
+        }
+        return true;
+    } else {
+        return false;
+    }
+    //console.log("helo");
+}
 
 //
 
