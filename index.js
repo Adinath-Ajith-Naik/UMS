@@ -212,7 +212,41 @@ function userUpdate(index, data) {
     //console.log("helo");
 }
 
-//
+// Viewing User
+
+app.get('/user/:id',(request,response)=>{
+    var uID=request.params.id;
+    var respo={
+        acknowledgement:{
+            status:"",
+            message:""
+        },
+        data:null
+    };
+    var logUser;
+
+    users.forEach((user)=>{
+        if(uID==user.userId){
+            logUser=user;
+        }else{
+            logUser=null;
+        }
+    })
+
+    if(logUser){
+        respo.acknowledgement.status="Success";
+        respo.acknowledgement.message="User Found";
+        respo.data=logUser;
+        response.status(200).send(respo);
+    }else{
+        respo.acknowledgement.status="Fail";
+        respo.acknowledgement.message="User not Found";
+        respo.data=null;
+        response.status(400).send(respo);
+    }
+})
+
+//Additon of 2 nos
 
 app.post('/addition', (request, response) => {
     console.log("Addition taking place.")
