@@ -1,6 +1,6 @@
 //const { response } = require("express");
 const {
-    response
+    response, request
 } = require("express");
 const express = require("express");
 const app = express();
@@ -242,8 +242,44 @@ app.get('/user/:id',(request,response)=>{
         respo.acknowledgement.status="Fail";
         respo.acknowledgement.message="User not Found";
         respo.data=null;
-        response.status(400).send(respo);
+        response.status(200).send(respo);
     }
+})
+
+// Deleting a user
+
+app.post('user/delete/:id',(request,response) =>{
+    var uID= request.params.id;
+
+    var respo={
+        acknowledgement:{
+            status: "",
+            message:""
+        },
+        data:null
+    };
+
+    users.forEach((user) =>{
+        if(uID == user.userId){
+            const index= users.indexOf(uID)
+
+            if(index >-1){
+                users.delete(index)
+                respo.acknowledgement.status="Success";
+                respo.acknowledgement.message="User Successfully Deleted";
+                respo.data=user;
+                response.status(200).send(respo);
+            }else{
+                respo.acknowledgement.status="Fail";
+                respo.acknowledgement.message="User Not Deleted";
+                respo.data=null;
+                response.status(200).send(respo);
+            }
+        }
+
+        console.log(users);
+    })
+
 })
 
 //Additon of 2 nos
