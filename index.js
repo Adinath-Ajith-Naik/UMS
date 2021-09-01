@@ -1,6 +1,7 @@
 //const { response } = require("express");
 const {
-    response, request
+    response,
+    request
 } = require("express");
 const express = require("express");
 const app = express();
@@ -190,19 +191,19 @@ app.post('/user/update/:id', (request, response) => {
 
 function userUpdate(index, data) {
     if (data.fname || data.mname || data.lname || data.un || data.pw) {
-        if(data.fname){
+        if (data.fname) {
             users[index].firstName = data.fname;
         }
-        if(data.mname){
+        if (data.mname) {
             users[index].middleName = data.mname;
         }
-        if(data.lname){
+        if (data.lname) {
             users[index].lastName = data.lname;
         }
-        if(data.un){
+        if (data.un) {
             users[index].userName = data.un;
         }
-        if(data.pw){
+        if (data.pw) {
             users[index].password = data.pw;
         }
         return true;
@@ -214,72 +215,64 @@ function userUpdate(index, data) {
 
 // Viewing User
 
-app.get('/user/:id',(request,response)=>{
-    var uID=request.params.id;
-    var respo={
-        acknowledgement:{
-            status:"",
-            message:""
+app.get('/user/:id', (request, response) => {
+    var uID = request.params.id;
+    var respo = {
+        acknowledgement: {
+            status: "",
+            message: ""
         },
-        data:null
+        data: null
     };
-    var logUser;
-
-    users.forEach((user)=>{
-        if(uID==user.userId){
-            logUser=user;
-        }else{
-            logUser=null;
+    var logUser = null;
+    users.forEach((user) => {
+        if (uID == user.userId) {
+            logUser = user;
         }
     })
 
-    if(logUser){
-        respo.acknowledgement.status="Success";
-        respo.acknowledgement.message="User Found";
-        respo.data=logUser;
+    if (logUser) {
+        respo.acknowledgement.status = "Success";
+        respo.acknowledgement.message = "User Found";
+        respo.data = logUser;
         response.status(200).send(respo);
-    }else{
-        respo.acknowledgement.status="Fail";
-        respo.acknowledgement.message="User not Found";
-        respo.data=null;
+    } else {
+        respo.acknowledgement.status = "Fail";
+        respo.acknowledgement.message = "User not Found";
+        respo.data = null;
         response.status(200).send(respo);
     }
 })
 
 // Deleting a user
 
-app.post('user/delete/:id',(request,response) =>{
-    var uID= request.params.id;
-
-    var respo={
-        acknowledgement:{
+app.get('/user/delete/:id', (request, response) => {
+    var uID = request.params.id;
+    var respo = {
+        acknowledgement: {
             status: "",
-            message:""
+            message: ""
         },
-        data:null
+        data: null
     };
-
-    users.forEach((user) =>{
-        if(uID == user.userId){
-            const index= users.indexOf(uID)
-
-            if(index >-1){
-                users.delete(index)
-                respo.acknowledgement.status="Success";
-                respo.acknowledgement.message="User Successfully Deleted";
-                respo.data=user;
-                response.status(200).send(respo);
-            }else{
-                respo.acknowledgement.status="Fail";
-                respo.acknowledgement.message="User Not Deleted";
-                respo.data=null;
-                response.status(200).send(respo);
-            }
+    var index = null;
+    users.forEach((user) => {
+        if (uID == user.userId) {
+            index = users.indexOf(user)
         }
-
-        console.log(users);
     })
-
+    if (index!=null) {
+        respo.data = users[index];
+        users.splice(index,1);
+        respo.acknowledgement.status = "Success";
+        respo.acknowledgement.message = "User Successfully Deleted";
+        response.status(200).send(respo);
+    } else {
+        respo.acknowledgement.status = "Fail";
+        respo.acknowledgement.message = "User Not Found! Deletion failed.";
+        respo.data = null;
+        response.status(200).send(respo);
+    }
 })
 
 //Additon of 2 nos
