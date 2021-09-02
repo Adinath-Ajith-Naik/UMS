@@ -10,6 +10,9 @@ import { CreateUserComponent } from './create-user/create-user.component';
   ],
   imports: [
     CommonModule
+  ],
+  exports:[
+    CreateUserComponent
   ]
 })
-export class UserManagementServiceModule { }
+export class UserManagementSystemModule { }
